@@ -135,6 +135,8 @@ function LessonPage() {
             </div>
           </section>
 
+          <LessonExercises exercises={exercisesByLesson[lesson.id] ?? []} />
+
           <nav className="mt-12 grid gap-3 border-t border-border pt-8 sm:grid-cols-2">
             {prev ? (
               <Link to="/lessons/$lessonId" params={{ lessonId: prev.id }} className="group flex flex-col gap-1 rounded-2xl border border-border bg-card p-5 transition-colors hover:bg-secondary">
