@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Clock, MessagesSquare, Target } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 import { lessons, type Lesson } from "@/data/lessons";
 
