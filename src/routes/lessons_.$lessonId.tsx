@@ -78,6 +78,17 @@ function LessonPage() {
           </section>
 
           <section className="mt-10">
+            <h2 className="flex items-center gap-2 font-display text-xl font-semibold">
+              <BookOpen className="h-5 w-5 text-primary" /> Explanation
+            </h2>
+            <div className="mt-4 space-y-4 rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-soft)]">
+              {lesson.explanation.map((p, i) => (
+                <p key={i} className="leading-relaxed text-card-foreground">{p}</p>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-10">
             <h2 className="font-display text-xl font-semibold">Key vocabulary</h2>
             <div className="mt-4 overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]">
               <table className="w-full text-sm">
@@ -85,17 +96,40 @@ function LessonPage() {
                   <tr>
                     <th className="px-5 py-3 text-left font-medium">Word / Phrase</th>
                     <th className="px-5 py-3 text-left font-medium">Meaning</th>
+                    <th className="px-5 py-3 text-left font-medium">Example</th>
                   </tr>
                 </thead>
                 <tbody>
                   {lesson.vocabulary.map((v, i) => (
                     <tr key={v.word} className={i !== lesson.vocabulary.length - 1 ? "border-b border-border" : ""}>
-                      <td className="px-5 py-3 font-medium text-card-foreground">{v.word}</td>
-                      <td className="px-5 py-3 text-muted-foreground">{v.meaning}</td>
+                      <td className="px-5 py-3 align-top font-medium text-card-foreground">{v.word}</td>
+                      <td className="px-5 py-3 align-top text-muted-foreground">{v.meaning}</td>
+                      <td className="px-5 py-3 align-top italic text-card-foreground/80">"{v.example}"</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+            </div>
+          </section>
+
+          <section className="mt-10">
+            <h2 className="flex items-center gap-2 font-display text-xl font-semibold">
+              <MessagesSquare className="h-5 w-5 text-primary" /> Example dialogues
+            </h2>
+            <div className="mt-4 space-y-5">
+              {lesson.dialogues.map((d, i) => (
+                <div key={i} className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-soft)]">
+                  <p className="text-xs font-medium uppercase tracking-wider text-primary">{d.title}</p>
+                  <div className="mt-4 space-y-3">
+                    {d.lines.map((line, j) => (
+                      <div key={j} className="flex gap-3">
+                        <span className="min-w-[5.5rem] flex-shrink-0 text-sm font-semibold text-card-foreground">{line.speaker}:</span>
+                        <span className="text-card-foreground/90">{line.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
 
