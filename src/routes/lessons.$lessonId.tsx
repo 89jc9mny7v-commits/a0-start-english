@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Target } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
-import { lessons } from "@/data/lessons";
+import { lessons, type Lesson } from "@/data/lessons";
 
 export const Route = createFileRoute("/lessons/$lessonId")({
   loader: ({ params }) => {
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/lessons/$lessonId")({
 });
 
 function LessonPage() {
-  const { lesson } = Route.useLoaderData();
+  const { lesson } = Route.useLoaderData() as { lesson: Lesson };
   const idx = lessons.findIndex((l) => l.id === lesson.id);
   const prev = lessons[idx - 1];
   const next = lessons[idx + 1];
