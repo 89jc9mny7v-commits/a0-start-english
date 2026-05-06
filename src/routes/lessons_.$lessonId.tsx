@@ -1,7 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Clock, MessagesSquare, Target } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import { LessonExercises } from "@/components/LessonExercises";
 import { lessons, type Lesson } from "@/data/lessons";
+import { exercisesByLesson } from "@/data/exercises";
 
 export const Route = createFileRoute("/lessons_/$lessonId")({
   loader: ({ params }) => {
@@ -132,6 +134,8 @@ function LessonPage() {
               ))}
             </div>
           </section>
+
+          <LessonExercises exercises={exercisesByLesson[lesson.id] ?? []} />
 
           <nav className="mt-12 grid gap-3 border-t border-border pt-8 sm:grid-cols-2">
             {prev ? (
