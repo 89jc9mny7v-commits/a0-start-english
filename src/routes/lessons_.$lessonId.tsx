@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock, Target } from "lucide-react
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
 import { lessons, type Lesson } from "@/data/lessons";
 
-export const Route = createFileRoute("/lessons/$lessonId")({
+export const Route = createFileRoute("/lessons_/$lessonId")({
   loader: ({ params }) => {
     const lesson = lessons.find((l) => l.id === params.lessonId);
     if (!lesson) throw notFound();
