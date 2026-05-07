@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LessonsRouteImport } from './routes/lessons'
+import { Route as GrammarRouteImport } from './routes/grammar'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LessonsLessonIdRouteImport } from './routes/lessons_.$lessonId'
@@ -17,6 +18,11 @@ import { Route as LessonsLessonIdRouteImport } from './routes/lessons_.$lessonId
 const LessonsRoute = LessonsRouteImport.update({
   id: '/lessons',
   path: '/lessons',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrammarRoute = GrammarRouteImport.update({
+  id: '/grammar',
+  path: '/grammar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -38,12 +44,14 @@ const LessonsLessonIdRoute = LessonsLessonIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/grammar': typeof GrammarRoute
   '/lessons': typeof LessonsRoute
   '/lessons/$lessonId': typeof LessonsLessonIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/grammar': typeof GrammarRoute
   '/lessons': typeof LessonsRoute
   '/lessons/$lessonId': typeof LessonsLessonIdRoute
 }
@@ -51,20 +59,28 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/grammar': typeof GrammarRoute
   '/lessons': typeof LessonsRoute
   '/lessons_/$lessonId': typeof LessonsLessonIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/lessons' | '/lessons/$lessonId'
+  fullPaths: '/' | '/about' | '/grammar' | '/lessons' | '/lessons/$lessonId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/lessons' | '/lessons/$lessonId'
-  id: '__root__' | '/' | '/about' | '/lessons' | '/lessons_/$lessonId'
+  to: '/' | '/about' | '/grammar' | '/lessons' | '/lessons/$lessonId'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/grammar'
+    | '/lessons'
+    | '/lessons_/$lessonId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  GrammarRoute: typeof GrammarRoute
   LessonsRoute: typeof LessonsRoute
   LessonsLessonIdRoute: typeof LessonsLessonIdRoute
 }
@@ -76,6 +92,13 @@ declare module '@tanstack/react-router' {
       path: '/lessons'
       fullPath: '/lessons'
       preLoaderRoute: typeof LessonsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grammar': {
+      id: '/grammar'
+      path: '/grammar'
+      fullPath: '/grammar'
+      preLoaderRoute: typeof GrammarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -105,6 +128,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  GrammarRoute: GrammarRoute,
   LessonsRoute: LessonsRoute,
   LessonsLessonIdRoute: LessonsLessonIdRoute,
 }
