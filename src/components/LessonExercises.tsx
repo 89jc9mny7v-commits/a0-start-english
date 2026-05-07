@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CheckCircle2, Dumbbell, RotateCcw, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -95,15 +95,20 @@ function MultipleChoice({ ex }: { ex: Extract<Exercise, { kind: "choice" }> }) {
 }
 
 function Matching({ ex }: { ex: Extract<Exercise, { kind: "match" }> }) {
-  // Shuffle right side once per mount with a stable seed
-  const shuffledRights = useMemo(() => {
-    const arr = ex.pairs.map((p, i) => ({ text: p.right, originalIndex: i }));
+  // Stable order on SSR + first client render to avoid hydration mismatch.
+  const initialRights = useMemo(
+    () => ex.pairs.map((p, i) => ({ text: p.right, originalIndex: i })),
+    [ex],
+  );
+  const [shuffledRights, setShuffledRights] = useState(initialRights);
+  useEffect(() => {
+    const arr = [...initialRights];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-    return arr;
-  }, [ex]);
+    setShuffledRights(arr);
+  }, [initialRights]);
 
   // assignments[leftIndex] = originalIndex of right (must equal leftIndex when correct)
   const [assignments, setAssignments] = useState<(number | null)[]>(() => ex.pairs.map(() => null));

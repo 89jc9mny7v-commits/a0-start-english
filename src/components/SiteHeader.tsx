@@ -14,6 +14,7 @@ export function SiteHeader() {
         <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
           <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "text-foreground" }} className="transition-colors hover:text-foreground">Home</Link>
           <Link to="/lessons" activeProps={{ className: "text-foreground" }} className="transition-colors hover:text-foreground">Lessons</Link>
+          <Link to="/a1" activeProps={{ className: "text-foreground" }} className="transition-colors hover:text-foreground">A1</Link>
           <Link to="/grammar" activeProps={{ className: "text-foreground" }} className="transition-colors hover:text-foreground">Grammar</Link>
           <Link to="/about" activeProps={{ className: "text-foreground" }} className="transition-colors hover:text-foreground">About</Link>
         </nav>
