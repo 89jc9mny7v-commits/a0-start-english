@@ -162,6 +162,24 @@ export const grammarSections: GrammarSection[] = [
         ],
       },
       {
+        id: "sentence-structure",
+        title: "Basic sentence structure (SVO)",
+        summary: "English sentences follow Subject + Verb + Object.",
+        explanation: [
+          "Most English sentences put the subject first, then the verb, then the object.",
+          "Unlike some languages, English does not normally drop the subject and the word order is quite fixed.",
+        ],
+        forms: [
+          { label: "Pattern", value: "Subject + Verb + Object" },
+          { label: "Example", value: "The boy (S) eats (V) an apple (O)." },
+        ],
+        examples: [
+          { en: "I love music." },
+          { en: "She drives a red car." },
+          { en: "We watch films on Fridays." },
+        ],
+      },
+      {
         id: "numbers-time",
         title: "Numbers, days and time",
         summary: "Count, tell the time and say the date.",
