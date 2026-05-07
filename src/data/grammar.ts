@@ -424,6 +424,62 @@ export const grammarSections: GrammarSection[] = [
           { en: "This is the best pizza in town." },
         ],
       },
+      {
+        id: "adverbs-of-frequency",
+        title: "Adverbs of frequency",
+        summary: "always, usually, often, sometimes, never — how often things happen.",
+        explanation: [
+          "Adverbs of frequency tell us how often an action happens.",
+          "They go BEFORE the main verb, but AFTER the verb 'to be'.",
+          "Common ones, from 100% to 0%: always, usually, often, sometimes, rarely, never.",
+        ],
+        forms: [
+          { label: "Before main verb", value: "I always drink water." },
+          { label: "After 'to be'", value: "She is never late." },
+        ],
+        examples: [
+          { en: "We sometimes watch movies." },
+          { en: "He usually walks to work." },
+          { en: "They are often tired in the morning." },
+        ],
+      },
+      {
+        id: "possessive-s",
+        title: "Possessive 's (Saxon genitive)",
+        summary: "Show that something belongs to a person.",
+        explanation: [
+          "Add 's to a person's name or noun to show possession: John's car = the car of John.",
+          "If a name already ends in -s (like James), you can just add an apostrophe: James' house.",
+          "For plural nouns ending in -s, add only the apostrophe: my parents' house.",
+        ],
+        examples: [
+          { en: "John's car is new." },
+          { en: "My teacher's book is on the desk." },
+          { en: "The dog's water bowl is empty." },
+        ],
+      },
+      {
+        id: "adjective-opposites",
+        title: "Common adjective opposites",
+        summary: "Useful pairs for describing people, places and things.",
+        explanation: [
+          "Learning adjectives in opposite pairs helps you remember them and describe the world more easily.",
+        ],
+        forms: [
+          { label: "Size", value: "big ↔ small" },
+          { label: "Temperature", value: "hot ↔ cold" },
+          { label: "Mood", value: "happy ↔ sad" },
+          { label: "Age", value: "new ↔ old" },
+          { label: "Speed", value: "fast ↔ slow" },
+          { label: "Price", value: "cheap ↔ expensive" },
+          { label: "Difficulty", value: "easy ↔ difficult" },
+          { label: "Quality", value: "good ↔ bad" },
+        ],
+        examples: [
+          { en: "This bag is cheap, but that one is very expensive." },
+          { en: "The test was easy for me but difficult for my friend." },
+        ],
+      },
     ],
   },
 ];
