@@ -1,0 +1,156 @@
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Clock, MessagesSquare, Target } from "lucide-react";
+import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
+import { lessonsA1 } from "@/data/lessonsA1";
+import type { Lesson } from "@/data/lessons";
+
+export const Route = createFileRoute("/a1_/$lessonId")({
+  loader: ({ params }) => {
+    const lesson = lessonsA1.find((l) => l.id === params.lessonId);
+    if (!lesson) throw notFound();
+    return { lesson };
+  },
+  head: ({ loaderData }) => ({
+    meta: loaderData
+      ? [
+          { title: `${loaderData.lesson.title} — A1 English | LinguaClass` },
+          { name: "description", content: loaderData.lesson.description },
+          { property: "og:title", content: `${loaderData.lesson.title} — A1 English` },
+          { property: "og:description", content: loaderData.lesson.description },
+        ]
+      : [{ title: "Lesson — LinguaClass" }],
+  }),
+  notFoundComponent: () => (
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="text-center">
+        <h1 className="font-display text-3xl font-semibold">Lesson not found</h1>
+        <Link to="/a1" className="mt-4 inline-block text-primary hover:underline">Back to A1 lessons</Link>
+      </div>
+    </div>
+  ),
+  errorComponent: ({ error }) => (
+    <div className="flex min-h-screen items-center justify-center">
+      <p className="text-muted-foreground">{error.message}</p>
+    </div>
+  ),
+  component: A1LessonPage,
+});
+
+function A1LessonPage() {
+  const { lesson } = Route.useLoaderData() as { lesson: Lesson };
+  const idx = lessonsA1.findIndex((l) => l.id === lesson.id);
+  const prev = lessonsA1[idx - 1];
+  const next = lessonsA1[idx + 1];
+
+  return (
+    <div className="flex min-h-screen flex-col bg-background">
+      <SiteHeader />
+      <main className="flex-1">
+        <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+          <Link to="/a1" className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground">
+            <ArrowLeft className="h-4 w-4" /> All A1 lessons
+          </Link>
+
+          <header className="mt-6 border-b border-border pb-8">
+            <div className="flex items-center gap-3 text-xs font-medium uppercase tracking-wider text-primary">
+              <span>Step {String(lesson.number).padStart(2, "0")}</span>
+              <span className="text-border">·</span>
+              <span>A1 · {lesson.topic}</span>
+            </div>
+            <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">{lesson.title}</h1>
+            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{lesson.description}</p>
+            <div className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
+              <Clock className="h-3.5 w-3.5" /> {lesson.duration}
+            </div>
+          </header>
+
+          <section className="mt-10">
+            <h2 className="flex items-center gap-2 font-display text-xl font-semibold">
+              <Target className="h-5 w-5 text-primary" /> Learning objectives
+            </h2>
+            <ul className="mt-4 space-y-2.5">
+              {lesson.objectives.map((o) => (
+                <li key={o} className="flex items-start gap-3 rounded-xl border border-border bg-card p-4 shadow-[var(--shadow-soft)]">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
+                  <span className="text-card-foreground">{o}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="mt-10">
+            <h2 className="flex items-center gap-2 font-display text-xl font-semibold">
+              <BookOpen className="h-5 w-5 text-primary" /> Explanation
+            </h2>
+            <div className="mt-4 space-y-4 rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-soft)]">
+              {lesson.explanation.map((p, i) => (
+                <p key={i} className="leading-relaxed text-card-foreground">{p}</p>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-10">
+            <h2 className="font-display text-xl font-semibold">Key vocabulary</h2>
+            <div className="mt-4 overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]">
+              <table className="w-full text-sm">
+                <thead className="bg-secondary text-secondary-foreground">
+                  <tr>
+                    <th className="px-5 py-3 text-left font-medium">Word / Phrase</th>
+                    <th className="px-5 py-3 text-left font-medium">Meaning</th>
+                    <th className="px-5 py-3 text-left font-medium">Example</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {lesson.vocabulary.map((v, i) => (
+                    <tr key={v.word} className={i !== lesson.vocabulary.length - 1 ? "border-b border-border" : ""}>
+                      <td className="px-5 py-3 align-top font-medium text-card-foreground">{v.word}</td>
+                      <td className="px-5 py-3 align-top text-muted-foreground">{v.meaning}</td>
+                      <td className="px-5 py-3 align-top italic text-card-foreground/80">"{v.example}"</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section className="mt-10">
+            <h2 className="flex items-center gap-2 font-display text-xl font-semibold">
+              <MessagesSquare className="h-5 w-5 text-primary" /> Example dialogues
+            </h2>
+            <div className="mt-4 space-y-5">
+              {lesson.dialogues.map((d, i) => (
+                <div key={i} className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-soft)]">
+                  <p className="text-xs font-medium uppercase tracking-wider text-primary">{d.title}</p>
+                  <div className="mt-4 space-y-3">
+                    {d.lines.map((line, j) => (
+                      <div key={j} className="flex gap-3">
+                        <span className="min-w-[5.5rem] flex-shrink-0 text-sm font-semibold text-card-foreground">{line.speaker}:</span>
+                        <span className="text-card-foreground/90">{line.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <nav className="mt-12 grid gap-3 border-t border-border pt-8 sm:grid-cols-2">
+            {prev ? (
+              <Link to="/a1/$lessonId" params={{ lessonId: prev.id }} className="group flex flex-col gap-1 rounded-2xl border border-border bg-card p-5 transition-colors hover:bg-secondary">
+                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground"><ArrowLeft className="h-3.5 w-3.5" /> Previous</span>
+                <span className="font-display font-semibold text-card-foreground">{prev.title}</span>
+              </Link>
+            ) : <div />}
+            {next ? (
+              <Link to="/a1/$lessonId" params={{ lessonId: next.id }} className="group flex flex-col items-end gap-1 rounded-2xl border border-border bg-card p-5 text-right transition-colors hover:bg-secondary sm:col-start-2">
+                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">Next <ArrowRight className="h-3.5 w-3.5" /></span>
+                <span className="font-display font-semibold text-card-foreground">{next.title}</span>
+              </Link>
+            ) : <div />}
+          </nav>
+        </article>
+      </main>
+      <SiteFooter />
+    </div>
+  );
+}

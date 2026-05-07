@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as GrammarRouteImport } from './routes/grammar'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as A1RouteImport } from './routes/a1'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LessonsLessonIdRouteImport } from './routes/lessons_.$lessonId'
+import { Route as A1LessonIdRouteImport } from './routes/a1_.$lessonId'
 
 const LessonsRoute = LessonsRouteImport.update({
   id: '/lessons',
@@ -30,6 +32,11 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const A1Route = A1RouteImport.update({
+  id: '/a1',
+  path: '/a1',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -40,48 +47,77 @@ const LessonsLessonIdRoute = LessonsLessonIdRouteImport.update({
   path: '/lessons/$lessonId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const A1LessonIdRoute = A1LessonIdRouteImport.update({
+  id: '/a1_/$lessonId',
+  path: '/a1/$lessonId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/a1': typeof A1Route
   '/about': typeof AboutRoute
   '/grammar': typeof GrammarRoute
   '/lessons': typeof LessonsRoute
+  '/a1/$lessonId': typeof A1LessonIdRoute
   '/lessons/$lessonId': typeof LessonsLessonIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/a1': typeof A1Route
   '/about': typeof AboutRoute
   '/grammar': typeof GrammarRoute
   '/lessons': typeof LessonsRoute
+  '/a1/$lessonId': typeof A1LessonIdRoute
   '/lessons/$lessonId': typeof LessonsLessonIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/a1': typeof A1Route
   '/about': typeof AboutRoute
   '/grammar': typeof GrammarRoute
   '/lessons': typeof LessonsRoute
+  '/a1_/$lessonId': typeof A1LessonIdRoute
   '/lessons_/$lessonId': typeof LessonsLessonIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/grammar' | '/lessons' | '/lessons/$lessonId'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/grammar' | '/lessons' | '/lessons/$lessonId'
-  id:
-    | '__root__'
+  fullPaths:
     | '/'
+    | '/a1'
     | '/about'
     | '/grammar'
     | '/lessons'
+    | '/a1/$lessonId'
+    | '/lessons/$lessonId'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/a1'
+    | '/about'
+    | '/grammar'
+    | '/lessons'
+    | '/a1/$lessonId'
+    | '/lessons/$lessonId'
+  id:
+    | '__root__'
+    | '/'
+    | '/a1'
+    | '/about'
+    | '/grammar'
+    | '/lessons'
+    | '/a1_/$lessonId'
     | '/lessons_/$lessonId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  A1Route: typeof A1Route
   AboutRoute: typeof AboutRoute
   GrammarRoute: typeof GrammarRoute
   LessonsRoute: typeof LessonsRoute
+  A1LessonIdRoute: typeof A1LessonIdRoute
   LessonsLessonIdRoute: typeof LessonsLessonIdRoute
 }
 
@@ -108,6 +144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/a1': {
+      id: '/a1'
+      path: '/a1'
+      fullPath: '/a1'
+      preLoaderRoute: typeof A1RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -122,16 +165,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LessonsLessonIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/a1_/$lessonId': {
+      id: '/a1_/$lessonId'
+      path: '/a1/$lessonId'
+      fullPath: '/a1/$lessonId'
+      preLoaderRoute: typeof A1LessonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  A1Route: A1Route,
   AboutRoute: AboutRoute,
   GrammarRoute: GrammarRoute,
   LessonsRoute: LessonsRoute,
+  A1LessonIdRoute: A1LessonIdRoute,
   LessonsLessonIdRoute: LessonsLessonIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
