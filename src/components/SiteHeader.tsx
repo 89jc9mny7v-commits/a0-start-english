@@ -17,6 +17,7 @@ export function SiteHeader() {
           <Link to="/a1" activeProps={{ className: "text-foreground" }} className="transition-colors hover:text-foreground">A1</Link>
           <Link to="/grammar" activeProps={{ className: "text-foreground" }} className="transition-colors hover:text-foreground">Grammar</Link>
           <Link to="/phrases" activeProps={{ className: "text-foreground" }} className="transition-colors hover:text-foreground">Phrases</Link>
+          <Link to="/reading" activeProps={{ className: "text-foreground" }} className="transition-colors hover:text-foreground">Reading</Link>
           <Link to="/about" activeProps={{ className: "text-foreground" }} className="transition-colors hover:text-foreground">About</Link>
         </nav>
         <Link
