@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PhrasesRouteImport } from './routes/phrases'
 import { Route as LessonsRouteImport } from './routes/lessons'
 import { Route as GrammarRouteImport } from './routes/grammar'
 import { Route as AboutRouteImport } from './routes/about'
@@ -17,6 +18,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LessonsLessonIdRouteImport } from './routes/lessons_.$lessonId'
 import { Route as A1LessonIdRouteImport } from './routes/a1_.$lessonId'
 
+const PhrasesRoute = PhrasesRouteImport.update({
+  id: '/phrases',
+  path: '/phrases',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LessonsRoute = LessonsRouteImport.update({
   id: '/lessons',
   path: '/lessons',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/grammar': typeof GrammarRoute
   '/lessons': typeof LessonsRoute
+  '/phrases': typeof PhrasesRoute
   '/a1/$lessonId': typeof A1LessonIdRoute
   '/lessons/$lessonId': typeof LessonsLessonIdRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/grammar': typeof GrammarRoute
   '/lessons': typeof LessonsRoute
+  '/phrases': typeof PhrasesRoute
   '/a1/$lessonId': typeof A1LessonIdRoute
   '/lessons/$lessonId': typeof LessonsLessonIdRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/grammar': typeof GrammarRoute
   '/lessons': typeof LessonsRoute
+  '/phrases': typeof PhrasesRoute
   '/a1_/$lessonId': typeof A1LessonIdRoute
   '/lessons_/$lessonId': typeof LessonsLessonIdRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/grammar'
     | '/lessons'
+    | '/phrases'
     | '/a1/$lessonId'
     | '/lessons/$lessonId'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/grammar'
     | '/lessons'
+    | '/phrases'
     | '/a1/$lessonId'
     | '/lessons/$lessonId'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/grammar'
     | '/lessons'
+    | '/phrases'
     | '/a1_/$lessonId'
     | '/lessons_/$lessonId'
   fileRoutesById: FileRoutesById
@@ -117,12 +129,20 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   GrammarRoute: typeof GrammarRoute
   LessonsRoute: typeof LessonsRoute
+  PhrasesRoute: typeof PhrasesRoute
   A1LessonIdRoute: typeof A1LessonIdRoute
   LessonsLessonIdRoute: typeof LessonsLessonIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/phrases': {
+      id: '/phrases'
+      path: '/phrases'
+      fullPath: '/phrases'
+      preLoaderRoute: typeof PhrasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lessons': {
       id: '/lessons'
       path: '/lessons'
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   GrammarRoute: GrammarRoute,
   LessonsRoute: LessonsRoute,
+  PhrasesRoute: PhrasesRoute,
   A1LessonIdRoute: A1LessonIdRoute,
   LessonsLessonIdRoute: LessonsLessonIdRoute,
 }
