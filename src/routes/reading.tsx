@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { BookOpen, Clock, CheckCircle2, XCircle } from "lucide-react";
+import { BookOpen, Clock, CheckCircle2, XCircle, Search } from "lucide-react";
 import { SiteHeader, SiteFooter } from "@/components/SiteHeader";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
   Tooltip,
   TooltipContent,
@@ -48,28 +53,15 @@ function tokenize(body: string): Token[] {
   return tokens;
 }
 
-function StoryView({ story }: { story: Story }) {
+function StoryBody({ story }: { story: Story }) {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [checked, setChecked] = useState(false);
-
   const paragraphs = story.body.split(/\n+/).filter(Boolean);
 
   return (
-    <article className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] sm:p-8">
-      <header className="mb-6 flex items-start justify-between gap-4">
-        <div>
-          <h2 className="font-display text-2xl font-semibold text-card-foreground">
-            {story.title}
-          </h2>
-          <p className="mt-1 text-sm text-muted-foreground">{story.summary}</p>
-        </div>
-        <span className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-          <Clock className="h-3 w-3" /> {story.minutes} min
-        </span>
-      </header>
-
+    <div className="pt-2">
       <TooltipProvider delayDuration={150}>
-        <div className="space-y-4 text-base leading-relaxed text-card-foreground sm:text-lg">
+        <div className="space-y-4 text-base leading-relaxed text-card-foreground">
           {paragraphs.map((p, i) => (
             <p key={i}>
               {tokenize(p).map((t, j) =>
@@ -100,8 +92,8 @@ function StoryView({ story }: { story: Story }) {
         Tip: hover (or tap) the underlined words to see their meaning.
       </p>
 
-      <section className="mt-8 border-t border-border pt-6">
-        <h3 className="font-display text-lg font-semibold text-card-foreground">
+      <section className="mt-6 border-t border-border pt-5">
+        <h3 className="font-display text-base font-semibold text-card-foreground">
           Comprehension check
         </h3>
         <ol className="mt-4 space-y-5">
@@ -147,7 +139,7 @@ function StoryView({ story }: { story: Story }) {
           ))}
         </ol>
 
-        <div className="mt-6 flex gap-3">
+        <div className="mt-6 flex flex-wrap gap-3">
           <button
             type="button"
             onClick={() => setChecked(true)}
@@ -165,27 +157,51 @@ function StoryView({ story }: { story: Story }) {
           >
             Reset
           </button>
-        </div>
-
-        {checked && (
-          <p className="mt-4 text-sm text-muted-foreground">
-            Score:{" "}
-            <span className="font-semibold text-card-foreground">
-              {story.questions.reduce(
-                (n, q, i) => n + (answers[i] === q.answer ? 1 : 0),
-                0,
-              )}{" "}
-              / {story.questions.length}
+          {checked && (
+            <span className="inline-flex h-10 items-center text-sm text-muted-foreground">
+              Score:{" "}
+              <span className="ml-1 font-semibold text-card-foreground">
+                {story.questions.reduce(
+                  (n, q, i) => n + (answers[i] === q.answer ? 1 : 0),
+                  0,
+                )}{" "}
+                / {story.questions.length}
+              </span>
             </span>
-          </p>
-        )}
+          )}
+        </div>
       </section>
-    </article>
+    </div>
   );
 }
 
 function ReadingPage() {
-  const levels: Array<"A0" | "A1"> = ["A0", "A1"];
+  const [level, setLevel] = useState<"all" | "A0" | "A1">("all");
+  const [query, setQuery] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return stories.filter((s) => {
+      if (level !== "all" && s.level !== level) return false;
+      if (!q) return true;
+      return (
+        s.title.toLowerCase().includes(q) ||
+        s.summary.toLowerCase().includes(q)
+      );
+    });
+  }, [level, query]);
+
+  const counts = {
+    all: stories.length,
+    A0: stories.filter((s) => s.level === "A0").length,
+    A1: stories.filter((s) => s.level === "A1").length,
+  };
+
+  const filterButtons: Array<{ key: "all" | "A0" | "A1"; label: string }> = [
+    { key: "all", label: "All" },
+    { key: "A0", label: "A0" },
+    { key: "A1", label: "A1" },
+  ];
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -200,32 +216,93 @@ function ReadingPage() {
               Mini-stories with hover glosses
             </h1>
             <p className="mt-3 max-w-2xl text-lg text-muted-foreground">
-              Short, level-appropriate English stories. Hover any underlined word to see its
-              meaning — then test yourself with quick comprehension questions.
+              Pick a story from the list. Tap to expand it, hover any underlined word to see its
+              meaning, and test yourself with quick comprehension questions.
             </p>
           </div>
         </section>
 
-        <section className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
-          <Tabs defaultValue="A0" className="w-full">
-            <TabsList className="mb-8 grid w-full max-w-sm grid-cols-2">
-              {levels.map((l) => (
-                <TabsTrigger key={l} value={l}>
-                  {l}
-                </TabsTrigger>
+        <section className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
+          {/* Controls */}
+          <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="inline-flex rounded-full border border-border bg-card p-1">
+              {filterButtons.map((b) => (
+                <button
+                  key={b.key}
+                  type="button"
+                  onClick={() => setLevel(b.key)}
+                  className={[
+                    "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                    level === b.key
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                  ].join(" ")}
+                >
+                  {b.label}{" "}
+                  <span className="ml-1 text-xs opacity-70">({counts[b.key]})</span>
+                </button>
               ))}
-            </TabsList>
+            </div>
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search stories…"
+                className="h-10 w-full rounded-full border border-border bg-card pl-9 pr-4 text-sm outline-none transition-colors focus:border-primary sm:w-64"
+              />
+            </div>
+          </div>
 
-            {levels.map((level) => (
-              <TabsContent key={level} value={level} className="space-y-8">
-                {stories
-                  .filter((s) => s.level === level)
-                  .map((s) => (
-                    <StoryView key={s.id} story={s} />
-                  ))}
-              </TabsContent>
-            ))}
-          </Tabs>
+          {filtered.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-border bg-card p-10 text-center text-sm text-muted-foreground">
+              No stories match your search.
+            </div>
+          ) : (
+            <Accordion
+              type="single"
+              collapsible
+              className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]"
+            >
+              {filtered.map((s) => (
+                <AccordionItem key={s.id} value={s.id} className="border-b border-border last:border-b-0">
+                  <AccordionTrigger className="px-5 py-4 hover:no-underline">
+                    <div className="flex flex-1 items-center gap-3 pr-3 text-left">
+                      <span
+                        className={[
+                          "inline-flex h-7 min-w-[2.25rem] items-center justify-center rounded-full px-2 text-xs font-semibold",
+                          s.level === "A0"
+                            ? "bg-primary/10 text-primary"
+                            : "bg-accent/40 text-accent-foreground",
+                        ].join(" ")}
+                      >
+                        {s.level}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate font-display text-base font-semibold text-card-foreground">
+                          {s.title}
+                        </div>
+                        <div className="truncate text-xs text-muted-foreground">
+                          {s.summary}
+                        </div>
+                      </div>
+                      <span className="hidden flex-shrink-0 items-center gap-1 text-xs text-muted-foreground sm:inline-flex">
+                        <Clock className="h-3 w-3" /> {s.minutes} min
+                      </span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-5 pb-6">
+                    <StoryBody story={s} />
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          )}
+
+          <p className="mt-4 text-center text-xs text-muted-foreground">
+            {filtered.length} of {stories.length} stories
+          </p>
         </section>
       </main>
       <SiteFooter />
