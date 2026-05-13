@@ -45,6 +45,38 @@ At the [[checkout|place where you pay]] the woman says, "That's twelve pounds, p
     ],
   },
   {
+    id: "my-family",
+    level: "A0",
+    title: "My family",
+    minutes: 1,
+    summary: "A short description of family members. Practice possessives and to be.",
+    body: `My name is Sara. I have a small [[family|parents and children together]]. My [[father|male parent]] is a doctor and my [[mother|female parent]] is a teacher.
+I have one [[brother|male sibling]]. His name is Leo and he is ten years old. We have a [[cat|small pet animal]] called Mimi.
+We live in a [[house|building where people live]] with a small [[garden|place with plants outside a house]]. On Sundays we eat lunch [[together|with each other]].
+I love my family very much.`,
+    questions: [
+      { q: "What is the mother's job?", options: ["Doctor", "Teacher", "Nurse"], answer: 1 },
+      { q: "How old is Leo?", options: ["Eight", "Ten", "Twelve"], answer: 1 },
+      { q: "What is the cat's name?", options: ["Mimi", "Leo", "Sara"], answer: 0 },
+    ],
+  },
+  {
+    id: "rainy-day",
+    level: "A0",
+    title: "A rainy day",
+    minutes: 1,
+    summary: "A short story about staying home on a rainy day. Weather and rooms vocabulary.",
+    body: `It is Saturday and it is [[raining|water falling from the sky]]. Ben does not want to go [[outside|not in the house]].
+He stays in the [[living room|room with sofas and TV]]. He drinks hot [[chocolate|sweet brown drink]] and watches a film on TV.
+His [[dog|pet animal that barks]] sleeps on the [[sofa|long soft seat]] next to him. Outside, the [[wind|moving air]] is strong.
+Ben feels [[warm|not cold]] and happy at home.`,
+    questions: [
+      { q: "What is the weather like?", options: ["Sunny", "Snowy", "Rainy"], answer: 2 },
+      { q: "What does Ben drink?", options: ["Tea", "Hot chocolate", "Coffee"], answer: 1 },
+      { q: "Where is the dog?", options: ["On the floor", "On the sofa", "In the garden"], answer: 1 },
+    ],
+  },
+  {
     id: "weekend-park",
     level: "A1",
     title: "A weekend in the park",
@@ -90,6 +122,70 @@ Daniel says "Thank you very much!" and walks fast. Five minutes later he sees th
       { q: "What is Daniel looking for?", options: ["A church", "A fountain", "A restaurant"], answer: 1 },
       { q: "Which way does he turn?", options: ["Left", "Right", "Back"], answer: 1 },
       { q: "How does he feel about the fountain?", options: ["Disappointed", "Bored", "Impressed"], answer: 2 },
+    ],
+  },
+  {
+    id: "birthday-surprise",
+    level: "A1",
+    title: "A birthday surprise",
+    minutes: 2,
+    summary: "Friends prepare a surprise party. Past simple and party vocabulary.",
+    body: `It was Emma's [[birthday|the day you were born]] last Friday. Her friends wanted to make a [[surprise|something you don't expect]] party.
+After work, they went to her flat with a big [[cake|sweet food for celebrations]] and many [[balloons|colourful air bags]]. They turned off the lights and waited [[quietly|without making noise]].
+When Emma opened the door, everyone shouted "[[Happy birthday|greeting on a birthday]]!" Emma was so [[surprised|not expecting it]] that she almost dropped her bag.
+She [[laughed|made a happy sound]], hugged her friends, and said it was the best birthday of her life.`,
+    questions: [
+      { q: "When was Emma's birthday?", options: ["Saturday", "Friday", "Sunday"], answer: 1 },
+      { q: "What did the friends bring?", options: ["A cake and balloons", "Just a card", "Flowers"], answer: 0 },
+      { q: "How did Emma react?", options: ["She was angry", "She was bored", "She was surprised and happy"], answer: 2 },
+    ],
+  },
+  {
+    id: "cooking-lesson",
+    level: "A1",
+    title: "Learning to cook",
+    minutes: 2,
+    summary: "Sam learns to cook pasta with his grandmother. Food and instructions.",
+    body: `Sam is sixteen and he wants to learn to [[cook|prepare food]]. His [[grandmother|mother of your parent]] is a great cook, so he visits her on Saturday.
+"Today we make pasta," she says. She gives him a big [[pot|deep cooking container]] and tells him to fill it with water.
+Sam puts the pasta in the [[boiling|very hot bubbling]] water and waits ten minutes. Meanwhile, his grandmother makes a tomato [[sauce|liquid food on top of pasta]] with garlic and basil.
+The kitchen smells [[amazing|very good]]. They eat together and Sam thinks his [[first|number one]] pasta is delicious.`,
+    questions: [
+      { q: "Who teaches Sam to cook?", options: ["His mother", "His grandmother", "His friend"], answer: 1 },
+      { q: "What do they cook?", options: ["Pizza", "Pasta", "Soup"], answer: 1 },
+      { q: "How does the food smell?", options: ["Bad", "Strange", "Amazing"], answer: 2 },
+    ],
+  },
+  {
+    id: "first-day-school",
+    level: "A1",
+    title: "Lucy's first day at school",
+    minutes: 2,
+    summary: "A child's first day at a new school. Feelings, places and people.",
+    body: `Lucy is seven years old. Today is her [[first|number one]] day at a new school and she is a little [[nervous|worried about something new]].
+Her mother walks with her to the [[gate|door in a fence]]. A friendly teacher with red hair says, "[[Welcome|nice greeting for arriving people]], Lucy! My name is Miss Park."
+In the [[classroom|room where students learn]], Lucy sits next to a girl called Sofia. Sofia [[smiles|makes a happy face]] and shares her colour pencils.
+At the end of the day, Lucy runs to her mother. "I have a new [[friend|person you like]]!" she says, very happy.`,
+    questions: [
+      { q: "How does Lucy feel in the morning?", options: ["Excited only", "A little nervous", "Very angry"], answer: 1 },
+      { q: "Who is Sofia?", options: ["The teacher", "Lucy's sister", "A girl in her class"], answer: 2 },
+      { q: "What does Lucy say at the end of the day?", options: ["She is tired", "She has a new friend", "She wants to go home"], answer: 1 },
+    ],
+  },
+  {
+    id: "train-to-paris",
+    level: "A1",
+    title: "The train to Paris",
+    minutes: 2,
+    summary: "A short journey by train. Travel vocabulary and asking for help.",
+    body: `Olivia is going to Paris by train for the [[weekend|Saturday and Sunday]]. She arrives at the station early with one small [[suitcase|bag for travel clothes]].
+She buys a [[ticket|paper that shows you paid]] and finds [[platform|where the train stops]] number nine. The train leaves at exactly 9:15.
+On the train, she sits next to a [[window|opening with glass]] and watches the green fields outside. She drinks coffee and reads her book.
+Three hours later, the train arrives in Paris. Olivia takes a deep [[breath|air in your body]] and smiles. Her short [[holiday|free time from work]] is starting.`,
+    questions: [
+      { q: "How is Olivia travelling?", options: ["By plane", "By car", "By train"], answer: 2 },
+      { q: "Where does she sit?", options: ["By the door", "By the window", "By the toilet"], answer: 1 },
+      { q: "How does she feel when she arrives?", options: ["Tired and sad", "Happy", "Bored"], answer: 1 },
     ],
   },
 ];
